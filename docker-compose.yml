@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  reverse-proxy:
+    image: library/traefik:chevrotin
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./Docker/traefik/traefik.toml:/etc/traefik/traefik.toml
+      - ./Docker/traefik/acme.json:/etc/traefik/acme.json
+    networks:
+      - backend
+      - frontend
+
+networks:
+  backend:
+    internal: true
+  frontend:
+    external: true
+    name: frontend
